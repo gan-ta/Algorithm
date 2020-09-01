@@ -1,2 +1,2 @@
 # Algorithm
- Algorithm problem solving
+다양한 알고리즘 문제해결을 한 소스파일입니다.
