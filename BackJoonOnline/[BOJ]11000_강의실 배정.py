@@ -1,26 +1,31 @@
+import sys
+import heapq
+input = sys.stdin.readline
+
 if __name__ == '__main__':
     N = int(input())
-    K = int(input())
-    sensor_loc = list(map(int, input().split()))
+    class_list = []
+    heap = []
 
-    sensor_loc.sort()
+    for _ in range(N):
+        s, t = map(int, input().split())
+        class_list.append([s,t])
 
-    sensor_loc_dist = []
+    # 강의의 시작 순으로 정렬
+    class_list = sorted(class_list, key = lambda x : x[0])
 
-    for i, sensor in enumerate(sensor_loc):
-        if i == 0:
-            temp = sensor
-            continue
+    heapq.heappush(heap,class_list[0][1])
 
-        sensor_loc_dist.append(sensor - temp)
-        temp = sensor
+    # 순회하며 끝나는 시각을 heapq에 저장
+    for info in class_list[1:]:
+        s, t = info
+        check = heap[0]
 
-    cnt = 1
-    while cnt <= K-1:
-        if len(sensor_loc_dist) == 0:
-            break
-        m = max(sensor_loc_dist)
-        sensor_loc_dist.remove(m)
-        cnt += 1
+        # 만약 강의가 끝나는 시각이 아니라면
+        if check > s:
+            heapq.heappush(heap, t)
+        else:
+            heapq.heappop(heap)
+            heapq.heappush(heap, t)
 
-    print(sum(sensor_loc_dist))
+    print(len(heap))
